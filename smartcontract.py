@@ -1,7 +1,7 @@
 
 #import modules and packages necessary to employ following code:
 import time
-
+from time import sleep
 import datetime as dt
 from datetime import timedelta
 import datetime
@@ -178,6 +178,7 @@ df_contacts = df_contacts.drop(['sender', 'recipient', 'photo', 'date'], axis=1)
 # Function 1: filter messages per contact, check if they still have access. 
 # Please enter one of Mike's ex-girlfriends: 'Emma', or 'Claire'.
 name = str(input('Enter contact: '))
+sleep(1)
 def selection(name):
     select_transaction = df_transactions.loc[df_transactions['sender'] == name]
     select_contact = df_contacts.loc[df['name'] == name].copy()
@@ -194,14 +195,16 @@ selection(name)
 # Additionally, a function is to let the dashboard suggest blocking a contact after a certain amount of time has passed. 
 # Functie 2: suggest blocking a contact after not having text communication for three years or longer.
 
+sleep(1)
+
 df_transactions['month'] = df_transactions['date'].str.split('/').str[1]
 month = df_transactions['month']
 time_difference =  (pd.Timestamp.now().normalize() - pd.to_datetime(df_transactions['date'], errors='coerce'))
-three_years = pd.to_datetime('2019-1-01')
+three_years = int(1095)
 
 def date_block():
-    if time_difference > three_years:
-         if df_transactions["access"].any() == True:
+    if time_difference.any() > three_years :
+         if df_contacts["access"].any() == True:
              print(df_transactions["sender"] + " " + 'You have not spoken with this person in a while, this person has access to your photos')
              input('Would you like to restrict this contact from seeing your photos? ')
              block_contact(df_transactions['sender'])
@@ -218,11 +221,15 @@ def block_contact(name1):
     df_contacts.loc[df_contacts['name'] == name1, 'access'] = False
     print('Contact blocked')
 
+sleep(2)
+
 # Confirmation that this contact needs to be blocked; 
 block = str(input('Confirm restricting this contact from seeing your photos? ')) 
+sleep(1)
+
 if block == 'Yes':
     block_contact(name1)
-    print(df_contacts)
+    print('This contact is now blocked: ', df_contacts)
 else: 
     print('Contact not blocked')
 
