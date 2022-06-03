@@ -199,17 +199,23 @@ sleep(1)
 
 df_transactions['month'] = df_transactions['date'].str.split('/').str[1]
 month = df_transactions['month']
+
+import numpy as np
 time_difference =  (pd.Timestamp.now().normalize() - pd.to_datetime(df_transactions['date'], errors='coerce'))
+time_difference = time_difference.reset_index()
+for index, each in enumerate(time_difference.date):
+    time_difference[index:(index+1)] = int(each/np.timedelta64(1,'D'))
+time_difference = (time_difference['index'])
+
 three_years = int(1095)
 
 def date_block():
-    if time_difference.any() > three_years :
-         if df_contacts["access"].any() == True:
-             print(df_transactions["sender"] + " " + 'You have not spoken with this person in a while, this person has access to your photos')
-             input('Would you like to restrict this contact from seeing your photos? ')
-             block_contact(df_transactions['sender'])
-    else:
-        print('else statement triggered')
+    for each in time_difference['index']:
+        if each > three_years:
+            if df_contacts['access'].any() == True:
+                print(df_transactions["sender"] + " " + 'You have not spoken with this person in a while, this person has access to your photos')
+                input('Would you like to restrict this contact from seeing your photos? ')
+                block_contact(df_transactions['sender'])
 
 date_block()
 
