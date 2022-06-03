@@ -1,3 +1,10 @@
+
+#import modules and packages necessary to employ following code:
+import time
+
+import datetime as dt
+from datetime import timedelta
+import datetime
 from datetime import date
 from encodings import utf_8
 import hashlib
@@ -6,10 +13,12 @@ from os import access
 from time import time
 import pandas as pd
 
+# This code is written from a user POV. In this case, our user is Mike. The contacts in the DF are his, and the text information shows past texts between him 
+# and his last three girlfriends. 
 
 
-
-# create first block of blockchain, the 'genesis block': https://medium.com/coinmonks/python-tutorial-build-a-blockchain-713c706f6531
+# Create a blockchain to safely store information on 
+# Create the first block of blockchain, the 'genesis block', code from: https://medium.com/coinmonks/python-tutorial-build-a-blockchain-713c706f6531
 class Blockchain(object):
     def __init__(self):
         self.chain = []
@@ -33,14 +42,14 @@ class Blockchain(object):
         return block
 
 
-#Search the blockchain for the most recent block.
+# Search the blockchain for the most recent block.
 
     @property
     def last_block(self):
  
         return self.chain[-1]
 
-# add user information to the blockchain
+# Add user information to the blockchain through a function, these are the contacts of our user, Mike.
     def contact_information(self, name, gender, relationship, access):
         transaction = {
             'name': name,
@@ -51,7 +60,7 @@ class Blockchain(object):
         self.pending_transactions.append(transaction)
         return self.last_block['index'] + 1
 
-# Add a transaction with relevant info to the 'blockpool' - list of pending tx's. 
+# Add a transaction with relevant information to the 'blockpool' - list of pending transactions. These, in our case, are the texts between Mike and his past girlfriends. 
 
     def new_transaction(self, sender, recipient, amount, date):
         transaction = {
@@ -63,7 +72,9 @@ class Blockchain(object):
         self.pending_transactions.append(transaction)
         return self.last_block['index'] + 1
 
-# receive one block. Turn it into a string, turn that into Unicode (for hashing). Hash with SHA256 encryption, then translate the Unicode into a hexidecimal string.
+# Receive one block. 
+# Turn this block into a string, turn that into Unicode (for hashing). 
+# Hash with SHA256 encryption, then translate the Unicode into a hexidecimal string.
 
     def hash(self, block):
         string_object = json.dumps(block, sort_keys=True)
@@ -73,6 +84,8 @@ class Blockchain(object):
         hex_hash = raw_hash.hexdigest()
 
         return hex_hash
+
+# Our first block of the blockchain, containing the contacts of Mike.
 
 blockchain = Blockchain()
 u1=blockchain.contact_information('Emma', 'female', 'ex-girlfriend', True)
@@ -86,109 +99,131 @@ u8=blockchain.contact_information('Jordan', 'male', 'friend', False)
 blockchain.new_block(1)
 
 
-#add transactions to second block
-t1 = blockchain.new_transaction("Emma", "Mike", '1', '20/09/2018')
-t2 = blockchain.new_transaction("Mike", "Emma", '2', '21/09/2018')
-t3 = blockchain.new_transaction("Mike", "Emma", '1', '13/10/2018')
-t4 = blockchain.new_transaction("Mike", "Emma", '2', '14/10/2018')
-t5 = blockchain.new_transaction("Emma", "Mike", '3', '15/12/2018')
-t6 = blockchain.new_transaction("Emma", "Mike", '1', '6/01/2019')
-t7 = blockchain.new_transaction("Mike", "Emma", '1', '17/02/2019')
-t8 = blockchain.new_transaction("Mike", "Claire", '1', '03/03/2019')
-t9 = blockchain.new_transaction("Emma", "Mike", '2', '05/03/2019')
-t10 = blockchain.new_transaction("Emma", "Mike", '2', '06/03/2019')
-t11 = blockchain.new_transaction("Mike", "Emma", '3', '07/03/2019')
-t12 = blockchain.new_transaction("Emma", "Mike", '2', '08/04/2019')
-t13 = blockchain.new_transaction("Mike", "Emma", '1', '23/05/2019')
-t14 = blockchain.new_transaction("Mike", "Claire", '1', '26/06/2019')
-t15 = blockchain.new_transaction("Claire", "Mike", '1', '26/06/2019')
+# Add transactions to second block, these are Mike's past texts.
+
+t1 = blockchain.new_transaction("Emma", "Mike", '1', '2018/5/21')
+t2 = blockchain.new_transaction("Mike", "Emma", '2', '2018/5/22')
+t3 = blockchain.new_transaction("Mike", "Emma", '1', '2018/6/01')
+t4 = blockchain.new_transaction("Mike", "Emma", '2', '2018/6/02')
+t5 = blockchain.new_transaction("Emma", "Mike", '3', '2018/6/03')
+t6 = blockchain.new_transaction("Emma", "Mike", '1', '2018/8/03')
+t7 = blockchain.new_transaction("Mike", "Emma", '1', '2019/1/06')
+t8 = blockchain.new_transaction("Mike", "Claire", '1', '2019/1/06')
+t9 = blockchain.new_transaction("Emma", "Mike", '2', '2019/2/8')
+t10 = blockchain.new_transaction("Emma", "Mike", '2', '2019/2/13')
+t11 = blockchain.new_transaction("Mike", "Emma", '3', '2019/3/18')
+t12 = blockchain.new_transaction("Emma", "Mike", '2', '2019/3/18')
+t13 = blockchain.new_transaction("Mike", "Emma", '1', '2019/3/18')
+t14 = blockchain.new_transaction("Mike", "Claire", '1', '2019/7/23')
+t15 = blockchain.new_transaction("Claire", "Mike", '1', '2019/8/26')
 blockchain.new_block(2)
 
-t16 = blockchain.new_transaction("Mike", "Claire", '2', '2/08/2019')
-t17 = blockchain.new_transaction("Claire", "Mike", '1', '4/08/2019')
-t18 = blockchain.new_transaction("Claire", "Mike", '3', '7/08/2019')
-t19 = blockchain.new_transaction("Claire", "Mike", '3', '9/08/2019')
-t20 = blockchain.new_transaction("Mike", "Claire", '2', '2/09/2019')
-t21 = blockchain.new_transaction("Mike", "Claire", '2', '26/09/2019')
-t22 = blockchain.new_transaction("Mike", "Claire", '3', '26/09/2019')
-t23 = blockchain.new_transaction("Claire", "Mike", '1', '26/09/2019')
-t24 = blockchain.new_transaction("Mike", "Claire", '1', '4/10/2019')
-t25 = blockchain.new_transaction("Claire", "Mike", '1', '4/10/2019')
-t26 = blockchain.new_transaction("Claire", "Mike", '1', '5/10/2019')
-t27 = blockchain.new_transaction("Mike", "Claire", '2', '7/10/2019')
-t28 = blockchain.new_transaction("Mike", "Claire", '1', '18/10/2019')
-t29 = blockchain.new_transaction("Claire", "Mike", '1', '18/10/2019')
-t30 = blockchain.new_transaction("Claire", "Mike", '1', '18/10/2019')
-t31 = blockchain.new_transaction("Mike", "Claire", '1', '18/10/2019')
+t16 = blockchain.new_transaction("Mike", "Claire", '2', '2019/10/01')
+t17 = blockchain.new_transaction("Claire", "Mike", '1', '2019/10/04')
+t18 = blockchain.new_transaction("Claire", "Mike", '3', '2019/10/04')
+t19 = blockchain.new_transaction("Claire", "Mike", '3', '2019/10/18')
+t20 = blockchain.new_transaction("Mike", "Claire", '2', '2019/10/21')
+t21 = blockchain.new_transaction("Mike", "Claire", '2', '2019/10/22')
+t22 = blockchain.new_transaction("Mike", "Claire", '3', '2019/10/22')
+t23 = blockchain.new_transaction("Claire", "Mike", '1', '2019/10/24')
+t24 = blockchain.new_transaction("Mike", "Claire", '1', '2019/10/25')
+t25 = blockchain.new_transaction("Claire", "Mike", '1', '2019/10/29')
+t26 = blockchain.new_transaction("Claire", "Mike", '1', '2019/11/03')
+t27 = blockchain.new_transaction("Mike", "Claire", '2', '2019/11/06')
+t28 = blockchain.new_transaction("Mike", "Claire", '1', '2019/11/08')
+t29 = blockchain.new_transaction("Claire", "Mike", '1', '2020/1/12')
+t30 = blockchain.new_transaction("Claire", "Mike", '1', '2020/1/16')
+t31 = blockchain.new_transaction("Mike", "Claire", '1', '2020/1/28')
 blockchain.new_block(3)
 
-t32 = blockchain.new_transaction("Mike", "Amber", '1', '2/03/2020')
-t33 = blockchain.new_transaction("Amber", "Mike", '1', '5/03/2020')
-t34 = blockchain.new_transaction("Amber", "Mike", '2', '7/04/2020')
-t35 = blockchain.new_transaction("Mike", "Amber", '1', '9/04/2020')
-t36 = blockchain.new_transaction("Mike", "Amber", '2', '13/04/2020')
-t37 = blockchain.new_transaction("Mike", "Amber", '2', '26/05/2020')
-t38 = blockchain.new_transaction("Amber", "Mike", '1', '26/05/2020')
-t39 = blockchain.new_transaction("Mike", "Amber", '1', '28/07/2020')
-t40 = blockchain.new_transaction("Amber", "Mike", '3', '29/07/2020')
-t41 = blockchain.new_transaction("Mike", "Amber", '1', '4/08/2020')
-t42 = blockchain.new_transaction("Mike", "Amber", '2', '5/08/2020')
-t43 = blockchain.new_transaction("Amber", "Mike", '2', '7/08/2020')
-t44 = blockchain.new_transaction("Amber", "Mike", '1', '19/09/2020')
-t45 = blockchain.new_transaction("Amber", "Mike", '2', '19/09/2020')
-t46 = blockchain.new_transaction("Mike", "Amber", '1', '23/09/2020')
-t47 = blockchain.new_transaction("Amber", "Mike", '3', '23/10/2020')
+t32 = blockchain.new_transaction("Mike", "Amber", '1', '2020/2/04')
+t33 = blockchain.new_transaction("Amber", "Mike", '1', '2020/2/04')
+t34 = blockchain.new_transaction("Amber", "Mike", '2', '2020/2/06')
+t35 = blockchain.new_transaction("Mike", "Amber", '1', '2020/3/02')
+t36 = blockchain.new_transaction("Mike", "Amber", '2', '2020/4/14')
+t37 = blockchain.new_transaction("Mike", "Amber", '2', '2020/4/16')
+t38 = blockchain.new_transaction("Amber", "Mike", '1', '2020/5/24')
+t39 = blockchain.new_transaction("Mike", "Amber", '1', '2020/6/01')
+t40 = blockchain.new_transaction("Amber", "Mike", '3', '2020/6/12')
+t41 = blockchain.new_transaction("Mike", "Amber", '1', '2020/7/19')
+t42 = blockchain.new_transaction("Mike", "Amber", '2', '2020/7/23')
+t43 = blockchain.new_transaction("Amber", "Mike", '2', '2020/11/16')
+t44 = blockchain.new_transaction("Amber", "Mike", '1', '2021/1/22')
+t45 = blockchain.new_transaction("Amber", "Mike", '2', '2021/1/23')
+t46 = blockchain.new_transaction("Mike", "Amber", '1', '2021/2/01')
+t47 = blockchain.new_transaction("Amber", "Mike", '3', '2021/2/13')
 blockchain.new_block(4)
 
-#create json file, store data from blocks here for further processing
+# Create json file, store data from blocks here for further processing.
 data = blockchain.chain 
 with open('data.json', 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=4)
 
-#Convert the column 'transactions' into seperate column, display in panda's dataframe: https://www.geeksforgeeks.org/converting-nested-json-structures-to-pandas-dataframes/ 
+# Convert the column 'transactions' into seperate column, so that all necessary information is clearly displayed in a Panda's dataframe: https://www.geeksforgeeks.org/converting-nested-json-structures-to-pandas-dataframes/ 
 df = pd.json_normalize(data,record_path=['transactions'], meta=[
                   'timestamp', 'proof'])
 
-#split the data structure into contact information and transactions
-#texting information
-df_transactions = df.tail(45)
+# Split the data structure into contact information (the first block) and transactions (the latter three blocks)
+# Texting information
+df_transactions = df.tail(47)
 df_transactions = df_transactions.drop(['name', 'gender', 'relationship category', 'access'], axis=1)
 
-#contact information
-df_contacts = df.head(7)
+# Contact information
+df_contacts = df.head(8)
 df_contacts = df_contacts.drop(['sender', 'recipient', 'photo', 'date'], axis=1)
-print(df_contacts)
 
-#filter messages per contact, check if they still have access
+# An important function of the prototype is the information the 'dashboard' holds, as to provide an overview to the users. Here, we see an example; 
+# The following function asks for a contact, and shows all messages sent to that contact. Additionally, it shows if the contact still has access to Mike's sent photos. 
 
-#FUNCTIE 1: ZIE GEGEVENS + BERICHT GESCHIEDENIS GEKOZEN CONTACT
-#Kan/moet dit ook in een functie misschien?
+# Function 1: filter messages per contact, check if they still have access. 
+# Please enter one of Mike's ex-girlfriends: 'Emma', or 'Claire'.
 name = str(input('Enter contact: '))
-select_transaction = df_transactions.loc[df_transactions['sender'] == name]
-select_contact = df_contacts.loc[df['name'] == name].copy()
-print ('Texting log: ', select_transaction, 
-'Contact information: ', select_contact) #kan dit ook op aparte regel want ziet er beetje rommelig uit als je hem nu print.
+def selection(name):
+    select_transaction = df_transactions.loc[df_transactions['sender'] == name]
+    select_contact = df_contacts.loc[df['name'] == name].copy()
+    print ('Texting log: ', select_transaction),
+    print('Contact information: ', select_contact) 
+selection(name)
 
-# FUNCTIE 2: BEVESTIG DAT DEZE NAAM GEBLOCKED MOET WORDEN, VERANDER IN ACCESS COLUMN VOOR DEZE NAAM DE WAARDE TRUE NAAR FALSE
 
-#hierboven kies je een naam, waarvan de bericht geschiedenis geprint wordt. Dan ziet dus de user (wij), van he, zij heeft nog toegang tot mijn contacten (Access = True), dat is niet goed
-# Deze functie vraagt dus eerst of de toegang, van boven gedefinieerde persoon, geblokkeerd moet worden. 
+
+# The selection we see printed in our terminal is the text history between Mike and 'chosen ex-girlfriend', additionally, we can see if she still has access to Mike's photos, 
+# which is represented as a 'True' value in the column, 'access'.
+
+
+# Additionally, a function is to let the dashboard suggest blocking a contact after a certain amount of time has passed. 
+# Functie 2: suggest blocking a contact after not having text communication for three years or longer.
+
+df_transactions['month'] = df_transactions['date'].str.split('/').str[1]
+month = df_transactions['month']
+time_difference =  (pd.Timestamp.now().normalize() - pd.to_datetime(df_transactions['date'], errors='coerce'))
+three_years = pd.to_datetime('2019-1-01')
+
+def date_block():
+    if time_difference > three_years:
+         if df_transactions["access"].any() == True:
+             print(df_transactions["sender"] + " " + 'You have not spoken with this person in a while, this person has access to your photos')
+             input('Would you like to restrict this contact from seeing your photos? ')
+             block_contact(df_transactions['sender'])
+    else:
+        print('else statement triggered')
+
+date_block()
+
+
+# The last functions shows the blocking of contacts at free will of the user (Mike). Mike broke up with his last girlfriend Amber in 2021, and in the spirit of cleaning up and moving on, 
+# he now wants to block her from seeing his photos. The following function first asks for the contact he wants to block, please fill in, 'Amber'
+name1 = str(input('Enter contact you want to block: '))
+def block_contact(name1):
+    df_contacts.loc[df_contacts['name'] == name1, 'access'] = False
+    print('Contact blocked')
+
+# Confirmation that this contact needs to be blocked; 
 block = str(input('Confirm restricting this contact from seeing your photos? ')) 
-#nu moet hier een functie die, op basis van de naam die eerder opgegeven is, de waarde in de column 'Access', van True naar False verandert. 
-def switch_access (name):
-        if block == 'yes':
-            df_contacts.loc[df_contacts["access"] == True, False]
-        print(df_contacts)
+if block == 'Yes':
+    block_contact(name1)
+    print(df_contacts)
+else: 
+    print('Contact not blocked')
 
-switch_access(name)
-
-# FUNCTIE 3: SUGGESTIE 
-#selecteer een contact uit de lijst
-#conditional statement:
-# is het laatste bericht langer dan 3 maanden geleden verstuurd? 
-# if true -> print iets in de trant van 'Je hebt al zolang niet met deze persoon gepraat, deze heeft nog wel toegang tot fotos dat is balen'
-    # if true -> deze persoon heeft nog wel toegang tot je fotos
-        # zelfde blokkeer functie als hierboven 
-# if false -> print gewoon berichten geschiedenis of iets van 'open messages' voor de leuk 
-
-#dashboard ?
+# We nog see that the contact 'Amber', has been blocked. The value 'True' has switched to 'False' for her in the column 'access'.
